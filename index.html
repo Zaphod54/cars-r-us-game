@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cars R Us</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="game-shell" data-mode="title">
+    <canvas id="game-canvas" aria-label="Cars R Us three lane driving game"></canvas>
+
+    <header class="hud" aria-label="Run status">
+      <div class="brand-block">
+        <span>2D Street Run</span>
+        <h1>Cars R Us</h1>
+      </div>
+
+      <div class="hud-grid" aria-label="Scoreboard">
+        <div class="hud-tile">
+          <span>Score</span>
+          <strong id="score-label">0</strong>
+        </div>
+        <div class="hud-tile">
+          <span>Best</span>
+          <strong id="best-label">0</strong>
+        </div>
+        <div class="hud-tile lives-tile">
+          <span>Lives</span>
+          <strong id="lives-label">3</strong>
+        </div>
+        <div class="hud-tile">
+          <span>Status</span>
+          <strong id="status-label">Ready</strong>
+        </div>
+      </div>
+
+      <div class="hud-actions">
+        <button id="pause-button" class="tool-button" type="button">Pause</button>
+        <button id="music-button" class="tool-button music-on" type="button" aria-pressed="true">Music</button>
+        <button id="quit-button" class="tool-button quiet" type="button">Quit</button>
+      </div>
+    </header>
+
+    <aside class="effect-strip" aria-label="Active effects">
+      <span id="effect-label">Ready</span>
+      <span id="shield-light" aria-hidden="true"></span>
+    </aside>
+
+    <div class="touch-controls" aria-hidden="false">
+      <button id="left-button" class="lane-button" type="button" aria-label="Move left">&lt;</button>
+      <button id="right-button" class="lane-button" type="button" aria-label="Move right">&gt;</button>
+    </div>
+
+    <section id="title-screen" class="overlay" aria-label="Title screen">
+      <div class="title-stack">
+        <p class="eyebrow">Arcade Drive</p>
+        <h2>Cars R Us</h2>
+        <div class="title-score">Best <strong id="title-best-label">0</strong></div>
+        <button id="start-button" class="primary-button" type="button">Start Game</button>
+      </div>
+    </section>
+
+    <section id="ready-screen" class="overlay instructions-overlay" aria-label="Instructions" hidden>
+      <div class="instructions-panel">
+        <div class="instructions-header">
+          <p class="eyebrow">How to Play</p>
+          <h2>Cars R Us</h2>
+        </div>
+
+        <p class="intro-copy">
+          Drive forever through three lanes of traffic. Dodge every car you can, grab helpful powerups, and keep your 3 lives for as long as possible.
+        </p>
+
+        <div class="instruction-grid">
+          <section class="instruction-block">
+            <h3>Powerups</h3>
+            <div class="powerup-list" aria-label="Powerups">
+              <div class="powerup-card">
+                <span class="power-icon shield-icon" aria-hidden="true"></span>
+                <div>
+                  <strong>Shield</strong>
+                  <p>Blocks one crash.</p>
+                </div>
+              </div>
+              <div class="powerup-card">
+                <span class="power-icon life-icon" aria-hidden="true"></span>
+                <div>
+                  <strong>Extra Life</strong>
+                  <p>Adds one life.</p>
+                </div>
+              </div>
+              <div class="powerup-card">
+                <span class="power-icon turbo-icon" aria-hidden="true"></span>
+                <div>
+                  <strong>Turbo</strong>
+                  <p>Scores faster.</p>
+                </div>
+              </div>
+              <div class="powerup-card">
+                <span class="power-icon clear-icon" aria-hidden="true"></span>
+                <div>
+                  <strong>Clear Road</strong>
+                  <p>Removes cars ahead.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="instruction-block">
+            <h3>Negative Powerups</h3>
+            <div class="powerup-list" aria-label="Negative powerups">
+              <div class="powerup-card">
+                <span class="power-icon puddle-icon" aria-hidden="true"></span>
+                <div>
+                  <strong>Puddle</strong>
+                  <p>Slows your car.</p>
+                </div>
+              </div>
+              <div class="powerup-card">
+                <span class="power-icon breaker-icon" aria-hidden="true"></span>
+                <div>
+                  <strong>Shield Breaker</strong>
+                  <p>Removes your shield.</p>
+                </div>
+              </div>
+              <div class="powerup-card">
+                <span class="power-icon oil-icon" aria-hidden="true"></span>
+                <div>
+                  <strong>Oil Slick</strong>
+                  <p>Jams steering.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="instruction-block">
+            <h3>Controls</h3>
+            <p>Use <strong>A</strong> or <strong>Left Arrow</strong> to move left one lane.</p>
+            <p>Use <strong>D</strong> or <strong>Right Arrow</strong> to move right one lane.</p>
+            <p>On touch screens, tap the left and right buttons.</p>
+          </section>
+
+          <section class="instruction-block">
+            <h3>How You Die</h3>
+            <p>You start with 3 lives. Each car crash takes away 1 life unless a shield saves you.</p>
+            <p>When your lives reach 0, the game is over. You can also quit anytime.</p>
+          </section>
+        </div>
+
+        <p class="signoff">Have fun playing!!! -Shivane</p>
+        <button id="go-button" class="go-button" type="button">GO!</button>
+      </div>
+    </section>
+
+    <section id="pause-screen" class="overlay compact" aria-label="Paused" hidden>
+      <div class="pause-stack">
+        <h2>Paused</h2>
+        <button id="resume-button" class="primary-button" type="button">Play</button>
+        <button id="pause-quit-button" class="secondary-button" type="button">Quit</button>
+      </div>
+    </section>
+
+    <section id="game-over-screen" class="overlay compact" aria-label="Game over" hidden>
+      <div class="pause-stack">
+        <p class="eyebrow">Final Score</p>
+        <h2 id="final-score-label">0</h2>
+        <button id="retry-button" class="primary-button" type="button">Start Game</button>
+        <button id="game-over-quit-button" class="secondary-button" type="button">Quit</button>
+      </div>
+    </section>
+
+    <div id="toast" aria-live="polite"></div>
+    <div id="screen-flash" aria-hidden="true"></div>
+  </main>
+
+  <script>
+    (() => {
+      const standalonePaths = ["./standalone/game.bundle.js", "./game.bundle.js"];
+      let standalonePathIndex = 0;
+
+      const loadStandalone = () => {
+        if (document.querySelector("script[data-cars-standalone]")) {
+          return;
+        }
+
+        if (standalonePathIndex >= standalonePaths.length) {
+          return;
+        }
+
+        const fallback = document.createElement("script");
+        fallback.dataset.carsStandalone = "true";
+        fallback.src = standalonePaths[standalonePathIndex];
+        fallback.addEventListener("error", () => {
+          fallback.remove();
+          standalonePathIndex += 1;
+          loadStandalone();
+        });
+        document.body.appendChild(fallback);
+      };
+
+      if (window.location.protocol === "file:") {
+        loadStandalone();
+        return;
+      }
+
+      const gameScript = document.createElement("script");
+      gameScript.type = "module";
+      gameScript.src = "./game.js";
+      gameScript.addEventListener("error", loadStandalone);
+      document.body.appendChild(gameScript);
+
+      window.setTimeout(() => {
+        if (!window.__carsRUs) {
+          loadStandalone();
+        }
+      }, 900);
+    })();
+  </script>
+</body>
+</html>
