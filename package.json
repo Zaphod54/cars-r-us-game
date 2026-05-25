@@ -9,7 +9,7 @@
   "scripts": {
     "build": "vite build --config vite.standalone.config.js && vite build && mkdir -p dist/standalone && cp standalone/game.bundle.js dist/standalone/game.bundle.js",
     "bundle": "vite build --config vite.standalone.config.js",
-    "start": "vite preview --host 0.0.0.0 --port ${PORT:-4173}",
+    "start": "node server.js",
     "dev": "vite --host 127.0.0.1"
   },
   "dependencies": {
