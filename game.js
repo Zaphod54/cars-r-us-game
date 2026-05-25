@@ -14,6 +14,7 @@ const ui = {
   titleScreen: document.getElementById("title-screen"),
   readyScreen: document.getElementById("ready-screen"),
   pauseScreen: document.getElementById("pause-screen"),
+  creditsScreen: document.getElementById("credits-screen"),
   gameOverScreen: document.getElementById("game-over-screen"),
   finalScore: document.getElementById("final-score-label"),
   start: document.getElementById("start-button"),
@@ -22,6 +23,9 @@ const ui = {
   music: document.getElementById("music-button"),
   quit: document.getElementById("quit-button"),
   resume: document.getElementById("resume-button"),
+  credits: document.getElementById("credits-button"),
+  creditsBack: document.getElementById("credits-back-button"),
+  creditsPlay: document.getElementById("credits-play-button"),
   pauseQuit: document.getElementById("pause-quit-button"),
   retry: document.getElementById("retry-button"),
   gameOverQuit: document.getElementById("game-over-quit-button"),
@@ -430,6 +434,7 @@ function setMode(mode) {
   ui.titleScreen.hidden = mode !== "title";
   ui.readyScreen.hidden = mode !== "ready";
   ui.pauseScreen.hidden = mode !== "paused";
+  ui.creditsScreen.hidden = mode !== "credits";
   ui.gameOverScreen.hidden = mode !== "gameover";
   ui.pause.textContent = mode === "paused" ? "Play" : "Pause";
   updateUi();
@@ -464,6 +469,12 @@ function updateUi() {
 
   if (game.mode === "paused") {
     ui.status.textContent = "Paused";
+    return;
+  }
+
+  if (game.mode === "credits") {
+    ui.status.textContent = "Credits";
+    ui.effect.textContent = "Paused";
     return;
   }
 
@@ -650,6 +661,29 @@ function togglePause() {
     showToast("Drive", 0.55);
     canvas.focus();
   }
+}
+
+function showCredits() {
+  if (game.mode !== "paused") {
+    return;
+  }
+  setMode("credits");
+}
+
+function backToPause() {
+  if (game.mode !== "credits") {
+    return;
+  }
+  setMode("paused");
+}
+
+function playFromCredits() {
+  if (game.mode !== "credits") {
+    return;
+  }
+  setMode("running");
+  showToast("Drive", 0.55);
+  canvas.focus();
 }
 
 function quitGame() {
@@ -2060,6 +2094,9 @@ function bindEvents() {
   ui.music.addEventListener("click", toggleMusic);
   ui.quit.addEventListener("click", quitGame);
   ui.resume.addEventListener("click", togglePause);
+  ui.credits.addEventListener("click", showCredits);
+  ui.creditsBack.addEventListener("click", backToPause);
+  ui.creditsPlay.addEventListener("click", playFromCredits);
   ui.pauseQuit.addEventListener("click", quitGame);
   ui.retry.addEventListener("click", startGame);
   ui.gameOverQuit.addEventListener("click", quitGame);
@@ -2089,6 +2126,8 @@ function bindEvents() {
         togglePause();
       } else if (game.mode === "paused") {
         togglePause();
+      } else if (game.mode === "credits") {
+        backToPause();
       }
     }
   });

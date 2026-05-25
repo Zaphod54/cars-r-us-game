@@ -539,6 +539,41 @@ h1 {
   letter-spacing: 0;
 }
 
+.credits-overlay {
+  z-index: 6;
+  background: #000000;
+  color: #ffffff;
+}
+
+.credits-panel {
+  width: min(420px, calc(100vw - 32px));
+  padding: 24px;
+  text-align: center;
+}
+
+.credits-panel p {
+  color: #ffffff;
+  font-size: clamp(1.25rem, 4.8vw, 2.1rem);
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.credits-panel p + p {
+  margin-top: 8px;
+}
+
+.credits-actions {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.credits-actions .primary-button,
+.credits-actions .secondary-button {
+  margin-top: 0;
+}
+
 .primary-button,
 .secondary-button,
 .go-button {
@@ -610,6 +645,9 @@ h1 {
 .game-shell[data-mode="title"] .hud,
 .game-shell[data-mode="title"] .effect-strip,
 .game-shell[data-mode="title"] .touch-controls,
+.game-shell[data-mode="credits"] .hud,
+.game-shell[data-mode="credits"] .effect-strip,
+.game-shell[data-mode="credits"] .touch-controls,
 .game-shell[data-mode="gameover"] .touch-controls {
   opacity: 0;
   pointer-events: none;
