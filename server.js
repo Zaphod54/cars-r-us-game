@@ -53,13 +53,22 @@ const server = createServer(async (req, res) => {
 
   let target = requested;
   if (!existsSync(target) || (await stat(target)).isDirectory()) {
+    if (extname(requested)) {
+      send(res, 404, "Not found");
+      return;
+    }
+
     target = join(root, "index.html");
   }
 
   const extension = extname(target);
+  const cacheControl = extension === ".html" || extension === ".js"
+    ? "no-store"
+    : "public, max-age=31536000, immutable";
+
   res.writeHead(200, {
     "content-type": types[extension] || "application/octet-stream",
-    "cache-control": extension === ".html" ? "no-store" : "public, max-age=31536000, immutable",
+    "cache-control": cacheControl,
   });
   createReadStream(target).pipe(res);
 });

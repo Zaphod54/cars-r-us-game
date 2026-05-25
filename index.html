@@ -190,7 +190,9 @@
 
   <script>
     (() => {
-      const standalonePaths = ["./standalone/game.bundle.js", "./game.bundle.js"];
+      const assetVersion = "credits-fix-2026-05-25";
+      const withVersion = (path) => `${path}?v=${assetVersion}`;
+      const standalonePaths = ["./standalone/game.bundle.js", "./game.bundle.js"].map(withVersion);
       let standalonePathIndex = 0;
 
       const loadStandalone = () => {
@@ -220,7 +222,7 @@
 
       const gameScript = document.createElement("script");
       gameScript.type = "module";
-      gameScript.src = "./game.js";
+      gameScript.src = withVersion("./game.js");
       gameScript.addEventListener("error", loadStandalone);
       document.body.appendChild(gameScript);
 
